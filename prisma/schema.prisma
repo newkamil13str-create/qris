@@ -1,0 +1,79 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  password      String
+  role          Role          @default(USER)
+  plan          Plan          @default(FREE)
+  planExpiresAt DateTime?
+  balance       Int           @default(0)
+  apiKey        String        @unique @default(cuid())
+  telegramId    String?
+  telegramToken String?
+  banned        Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  transactions  Transaction[]
+  withdrawals   Withdrawal[]
+  qrisRequests  QrisRequest[]
+}
+
+model Transaction {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  orderId       String    @unique
+  amount        Int
+  fee           Int       @default(0)
+  totalPayment  Int
+  status        TxStatus  @default(PENDING)
+  paymentNumber String    @db.Text
+  expiredAt     DateTime
+  type          TxType
+  planTarget    Plan?
+  createdAt     DateTime  @default(now())
+  paidAt        DateTime?
+}
+
+model Withdrawal {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  amount      Int
+  bankName    String
+  bankAccount String
+  bankHolder  String
+  status      WdStatus  @default(PENDING)
+  note        String?
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+}
+
+model QrisRequest {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  staticQris  String    @db.Text
+  amount      Int
+  dynamicQris String    @db.Text
+  orderId     String    @unique
+  status      TxStatus  @default(PENDING)
+  createdAt   DateTime  @default(now())
+}
+
+enum Role    { USER ADMIN }
+enum Plan    { FREE BASIC PREMIUM MAX }
+enum TxStatus { PENDING PAID EXPIRED FAILED }
+enum TxType  { TOPUP SUBSCRIPTION QRIS }
+enum WdStatus { PENDING APPROVED REJECTED }

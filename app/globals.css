@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 45 95% 54%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 13%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 45 95% 54%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-[#0a0a0a] text-white font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 { @apply font-heading; }
+}
+
+@layer utilities {
+  .gold-gradient {
+    @apply bg-gradient-to-r from-yellow-400 to-yellow-600;
+  }
+  .gold-text {
+    @apply bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent;
+  }
+  .card-surface {
+    @apply bg-[#111111] border border-[#222222] rounded-xl;
+  }
+  .card-hover {
+    @apply hover:border-yellow-500/40 transition-all duration-200;
+  }
+  .btn-gold {
+    @apply bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold hover:from-yellow-300 hover:to-yellow-500 transition-all duration-200;
+  }
+  .input-dark {
+    @apply bg-[#1a1a1a] border-[#333] text-white placeholder:text-gray-600 focus:border-yellow-500/50 focus:ring-yellow-500/20;
+  }
+  .scrollbar-dark::-webkit-scrollbar { width: 4px; }
+  .scrollbar-dark::-webkit-scrollbar-track { background: #111; }
+  .scrollbar-dark::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+}
